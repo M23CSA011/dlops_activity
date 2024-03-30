@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import LabelEncoder
 
 def load_data(file_path):
     """Load data from a CSV file."""
@@ -29,6 +30,12 @@ def analyze_data(data):
             plt.ylabel('Frequency')
             plt.show()
         
+        cat_columns = data.select__dtypes(include=['object']).columns
+        label_encoders = {}
+        for col in cat_columns:
+            label_encoders[col] = LabelEncoder()
+            data[col] = label_encoders[col].fit_transform(data[col])
+
         # Plot bar plot for the class label (string type)
         class_label_counts = data['Class'].value_counts()
         class_label_counts.plot(kind='bar')
